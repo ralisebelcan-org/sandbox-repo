@@ -22,7 +22,7 @@ jobs:
         run: echo "Pre-deploymetn stage for ${{ env.ENVIRONMENT }}"
 
   deploy:
-    if: github.event.pull_request.merged == 'true'
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     environment: staging
     steps:
