@@ -1,0 +1,32 @@
+name: Development CI/CD
+
+on:
+  pull_request:
+    types: [opened]
+    branches:
+      - development
+  push:
+    branches:
+      - development
+
+env:
+  ENVIRONMENT: ${{ vars.environment }}
+
+jobs:
+  build:
+    if: github.event_name == 'pull_request' && github.event.action == 'opened' && github.event.pull_request.base.ref != 'staging'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Pre-deploymet stage
+        run: echo "Pre-deploymetn stage for ${{ env.ENVIRONMENT }}"
+
+  deploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/development' && github.event.pull_request.base.ref != 'staging'
+    runs-on: ubuntu-latest
+    environment: development
+    steps:
+      - uses: actions/checkout@v3
+      - name: Deploymet stage
+        run: echo "Deploymetn stage for ${{ env.ENVIRONMENT }}"
